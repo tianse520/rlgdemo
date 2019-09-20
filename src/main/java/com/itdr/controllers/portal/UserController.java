@@ -8,8 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @Controller
@@ -21,8 +25,10 @@ public class UserController {
     UserService userService;
 
     //用户登录
-    @PostMapping("login.do")
-    public ServerResponse<Users> login(String username, String password, HttpSession session){
+    @RequestMapping("login.do")
+    public ServerResponse<Users> login(@RequestParam("username") String username, @RequestParam("password")String password, HttpSession session){
+        System.out.println(username);
+        System.out.println(password);
         ServerResponse<Users> sr = userService.login(username,password);//userService被错写成UserService，大小写错误，导致login方法必须创建静态函数
         //当返回的是成功状态才执行
         if(sr.isSuccess()) {
@@ -80,7 +86,7 @@ public class UserController {
     public ServerResponse<Users> getInforamtion(HttpSession session){
         Users users = (Users) session.getAttribute(Const.LOGINUSER);
         if (users == null){
-            return ServerResponse.defeatedRS(Const.UsersEnum.NO_LOGIN.getCode(),Const.UsersEnum.NO_LOGIN.getDesc());
+            return ServerResponse.defeatedRS(Const.UsersEnum.EXIT.getCode(),Const.UsersEnum.EXIT.getDesc());
         }else {
             ServerResponse sr = userService.getInforamtion(users);
             return sr;

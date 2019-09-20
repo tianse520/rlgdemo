@@ -1,20 +1,21 @@
 package com.itdr.mappers;
 
 import com.itdr.pojo.Product;
-import com.itdr.pojo.ProductWithBLOBs;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface ProductMapper {
-    int deleteByPrimaryKey(Integer id);
 
-    int insert(ProductWithBLOBs record);
+    //根据圣品ID获取商品详情
+    Product selectByID(@Param("productId") Integer productId,
+                       @Param("is_new")Integer is_new,
+                       @Param("is_hot")Integer is_hot,
+                       @Param("is_banner")Integer is_banner);
 
-    int insertSelective(ProductWithBLOBs record);
-
-    ProductWithBLOBs selectByPrimaryKey(Integer id);
-
-    int updateByPrimaryKeySelective(ProductWithBLOBs record);
-
-    int updateByPrimaryKeyWithBLOBs(ProductWithBLOBs record);
-
-    int updateByPrimaryKey(Product record);
+    //根据商品ID或者商品名称关键字查询数据
+    List<Product> selectByIdOrName(@Param("productId")Integer productId,
+                                   @Param("keyword")String keyword,
+                                   @Param("col")String col,
+                                   @Param("order")String order);
 }
