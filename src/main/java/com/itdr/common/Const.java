@@ -27,6 +27,7 @@ public class Const {
         Integer UNCHECK=0;
     }
 
+    /*用户模块*/
     public enum UsersEnum{
         //用户登录
         ERROR_PASSWORD(1,"密码错误"),
@@ -60,6 +61,72 @@ public class Const {
         private String desc;
 
         private UsersEnum(int code,String desc){
+            this.code = code;
+            this.desc = desc;
+        }
+
+        public int getCode() {
+            return code;
+        }
+
+        public void setCode(int code) {
+            this.code = code;
+        }
+
+        public String getDesc() {
+            return desc;
+        }
+
+        public void setDesc(String desc) {
+            this.desc = desc;
+        }
+    }
+
+    /*购物车模块*/
+    public enum CartEnum{
+        NO_CART(3,"商品不存在"),
+        EMPTY_NUM(9,"参数不能为空"),
+        ERROR_UPDATE(2,"更新数据失败"),
+        EMPTY_CART(1,"还没有选中任何商品哦~");
+        private int code;
+        private String desc;
+
+        private CartEnum(int code,String desc){
+            this.code = code;
+            this.desc = desc;
+        }
+
+        public int getCode() {
+            return code;
+        }
+
+        public void setCode(int code) {
+            this.code = code;
+        }
+
+        public String getDesc() {
+            return desc;
+        }
+
+        public void setDesc(String desc) {
+            this.desc = desc;
+        }
+    }
+
+    public enum PaymentPlatformEnum{
+
+        ALIPAY(1,"支付宝"),
+        ALIPAY_FALSE(301,"支付宝生成订单失败"),
+        VERIFY_SIGNATURE_FLASE(302,"支付宝验签失败"),
+        VERIFY_ORDER_FALSE(303,"不是本商品的订单"),
+        REPEAT_USEALIPAY(304,"支付宝重复调用"),
+        SAVEPAYMSG_FALSE(305,"支付信息保存失败"),
+        EMPTY_ALIPAY(7,"要支付的订单不存在"),
+        ERROR_USER_CART(7,"订单和用户不匹配"),
+        ERROR_CART(7,"要支付的订单不是未付款状态");
+        private int code;
+        private String desc;
+        private PaymentPlatformEnum(int code,String desc){
             this.code = code;
             this.desc = desc;
         }

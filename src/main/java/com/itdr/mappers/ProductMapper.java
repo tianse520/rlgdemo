@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ProductMapper {
 
-    //根据圣品ID获取商品详情
+    //根据商品ID获取商品详情
     Product selectByID(@Param("productId") Integer productId,
                        @Param("is_new")Integer is_new,
                        @Param("is_hot")Integer is_hot,

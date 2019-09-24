@@ -29,9 +29,9 @@
     insert into neuedu_payinfo (id, user_id, order_no, 
       pay_platform, platform_number, platform_status, 
       create_time, update_time)
-    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{orderNo,jdbcType=BIGINT}, 
+    values (null, #{userId,jdbcType=INTEGER}, #{orderNo,jdbcType=BIGINT},
       #{payPlatform,jdbcType=INTEGER}, #{platformNumber,jdbcType=VARCHAR}, #{platformStatus,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+      now(), now())
   </insert>
   <insert id="insertSelective" parameterType="com.itdr.pojo.PayInFo" >
     insert into neuedu_payinfo

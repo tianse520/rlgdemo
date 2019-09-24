@@ -37,11 +37,10 @@ public class CartServiceImpl implements CartService {
     public ServerResponse<CartVO> addOne(Integer productId, Integer count, Integer uid) {
         //参数非空判断
         if (productId == null || productId <= 0 || count == null || count <= 0) {
-            return ServerResponse.defeatedRS("非法参数");
+            return ServerResponse.defeatedRS(Const.CartEnum.EMPTY_NUM.getCode(),Const.CartEnum.EMPTY_NUM.getDesc());
         }
 
         //向购物车表中存储数据
-
 
         //如果有这条购物信息，就是更新购物数量，如果没有才是插入新数据
         Cart c2 = cartMapper.selectByUidAndProductID(uid, productId);
@@ -73,7 +72,7 @@ public class CartServiceImpl implements CartService {
         //创建变量存储购物车总价
         BigDecimal cartTotalPrice = new BigDecimal("0");
 
-        //用力存放CartProductVO对象的集合
+        //用来存放CartProductVO对象的集合
         List<CartProductVO> cartProductVOList = new ArrayList<CartProductVO>();
 
         //根据用户ID查询该用户的所有购物车信息
@@ -93,7 +92,7 @@ public class CartServiceImpl implements CartService {
                 cartForQuantity.setQuantity(cartProductVO.getQuantity());
                 cartMapper.updateByPrimaryKeySelective(cartForQuantity);
                 //计算购物车总价
-                //判断拿出的每一条信息，计算选中的商品价格
+                //判断拿出的每一条信息是否被选中，计算选中的商品价格
                 if (cart.getChecked() == Const.Cart.CHECK) {
                     cartTotalPrice = BigDecimalUtils.add(cartTotalPrice.doubleValue(), cartProductVO.getProductTotalPrice().doubleValue());
                 }
@@ -131,12 +130,11 @@ public class CartServiceImpl implements CartService {
     }
 
     //购物车更新商品
-
     @Override
     public ServerResponse<CartVO> updateCart(Integer productId, Integer count, Integer id) {
         //参数非空判断
         if (productId == null || productId <= 0 || count == null || count <= 0) {
-            return ServerResponse.defeatedRS("非法参数");
+            return ServerResponse.defeatedRS(Const.CartEnum.EMPTY_NUM.getCode(),Const.CartEnum.EMPTY_NUM.getDesc());
         }
 
         //如果有这条购物信息，就是更新购物数量，如果没有才是插入新数据
@@ -153,7 +151,7 @@ public class CartServiceImpl implements CartService {
     @Override
     public ServerResponse<CartVO> deleteCart(String productIds, Integer id) {
         if (productIds == null||productIds.equals("")){
-            return ServerResponse.defeatedRS("非法参数");
+            return ServerResponse.defeatedRS(Const.CartEnum.EMPTY_NUM.getCode(),Const.CartEnum.EMPTY_NUM.getDesc());
         }
 
         //把字符串中的数据放到集合中

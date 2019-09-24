@@ -27,7 +27,8 @@
     from neuedu_order
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from neuedu_order
     where id = #{id,jdbcType=INTEGER}
   </delete>
@@ -179,21 +180,28 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <!--根据订单对象修改订单状态码和支付时间、更新时间-->
   <update id="updateByPrimaryKey" parameterType="com.itdr.pojo.Order" >
     update neuedu_order
-    set user_id = #{userId,jdbcType=INTEGER},
-      order_no = #{orderNo,jdbcType=BIGINT},
-      shipping_id = #{shippingId,jdbcType=INTEGER},
-      payment = #{payment,jdbcType=DECIMAL},
-      payment_type = #{paymentType,jdbcType=INTEGER},
-      postage = #{postage,jdbcType=INTEGER},
-      status = #{status,jdbcType=INTEGER},
+    set status = #{status,jdbcType=INTEGER},
       payment_time = #{paymentTime,jdbcType=TIMESTAMP},
-      send_time = #{sendTime,jdbcType=TIMESTAMP},
-      end_time = #{endTime,jdbcType=TIMESTAMP},
-      close_time = #{closeTime,jdbcType=TIMESTAMP},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
+      update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <!--按订单编号查找订单-->
+  <select id="selectByOrderNo" resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+    <include refid="Base_Column_List"/>
+    from neuedu_order
+    where order_no = #{orderNo}
+  </select>
+
+  <!--判断订单编号和用户ID数据-->
+  <select id="selectByOrderNoAndUid" parameterType="map" resultType="java.lang.Integer">
+    select
+    count(1)
+    from neuedu_order
+    where order_no = #{orderNo} and user_id = #{uid}
+  </select>
 </mapper>

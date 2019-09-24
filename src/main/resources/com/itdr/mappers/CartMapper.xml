@@ -125,10 +125,8 @@
     <!--改变购物车种商品选中状态-->
     <update id="selectOrUnSelect" parameterType="map">
       update neuedu_cart
-      set
-      checked = #{check,jdbcType=INTEGER},
-      update_time =now()
-    where id = #{id,jdbcType=INTEGER}
+      set checked = #{check}
+    where user_id = #{id}
     <if test="productId != null">
         and product_id = #{productId}
     </if>
@@ -137,7 +135,7 @@
     <delete id="deleteByProduct" parameterType="map">
         delete from neuedu_cart
         <where>
-            user_id = #{id}
+            user_id = #{id} and
             <if test="productIds != null">
                 product_id in
                 <foreach collection="productIds" item="productId" open="(" separator="," close=")">

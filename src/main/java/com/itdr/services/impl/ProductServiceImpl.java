@@ -65,7 +65,7 @@ public class ProductServiceImpl implements ProductService {
         return ServerResponse.successRS(productVO);
     }
 
-    //商品搜索+动态排序
+    //商品搜索+动态排序，页码pageNum（要几页数据），条数pageSize（每一页几条数据）
     @Override
     public ServerResponse<Product> listProduct(Integer productId, String keyword, Integer pageNum, Integer pageSize, String orderBy) {
         if ((productId == null||productId<0) && (keyword == null||keyword.equals(""))){
@@ -79,6 +79,7 @@ public class ProductServiceImpl implements ProductService {
         }
 
         String keys = "%"+keyword+"%";
+        /*使用PageHelper传入页码和每一页的数据，在sql语句上添加limit，能够顺利使用order by SQL语句*/
         PageHelper.startPage(pageNum,pageSize,split[0]+""+split[1]);
         List<Product> li = productMapper.selectByIdOrName(productId,keys,split[0],split[1]);
         PageInfo pf = new PageInfo(li);

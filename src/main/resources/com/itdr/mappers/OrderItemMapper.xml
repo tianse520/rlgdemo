@@ -24,7 +24,8 @@
     from neuedu_order_item
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from neuedu_order_item
     where id = #{id,jdbcType=INTEGER}
   </delete>
@@ -161,4 +162,13 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <!--根据订单号查对应商品详情-->
+  <select id="selectByOrderNo" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from neuedu_order_item
+    where order_no = #{oid}
+  </select>
+
 </mapper>
