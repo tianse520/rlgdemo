@@ -22,6 +22,7 @@
     id, category_id, pname, subtitle, main_image,sub_images,detail, price, stock, status, is_new, is_hot,
     is_banner, create_time, update_time
   </sql>
+
   <!--根据圣品ID获取商品详情-->
     <select id="selectByID" parameterType="map" resultMap="BaseResultMap">
       select
@@ -63,4 +64,18 @@
       <!--</if>-->
     </where>
   </select>
+  <!--根据商品ID获取商品数据-->
+    <select id="selectByProductId" parameterType="integer" resultMap="BaseResultMap">
+      select
+      <include refid="Base_Column_List"/>
+      from neuedu_product
+      where id=#{productId}
+    </select>
+
+  <!--根据商品ID更新商品数据-->
+  <update id="updateById" parameterType="com.itdr.pojo.Product">
+    update neuedu_product
+    set stock = #{stock,jdbcType=INTEGER},update_time = now()
+    where id = #{id,jdbcType=INTEGER}
+  </update>
 </mapper>

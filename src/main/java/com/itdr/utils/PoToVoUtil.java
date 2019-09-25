@@ -3,14 +3,13 @@ package com.itdr.utils;
 import com.alipay.api.domain.ExtendParams;
 import com.alipay.api.domain.GoodsDetail;
 import com.itdr.common.Const;
-import com.itdr.pojo.Cart;
-import com.itdr.pojo.Order;
-import com.itdr.pojo.OrderItem;
-import com.itdr.pojo.Product;
+import com.itdr.pojo.*;
 import com.itdr.pojo.pay.BizContent;
 import com.itdr.pojo.pay.PGoodsDetail;
 import com.itdr.pojo.vo.CartProductVO;
+import com.itdr.pojo.vo.OrderItemVO;
 import com.itdr.pojo.vo.ProductVo;
+import com.itdr.pojo.vo.ShippingVO;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -77,6 +76,35 @@ public class PoToVoUtil {
         cartProductVO.setProductTotalPrice(productTotalPrice);
 
         return cartProductVO;
+    }
+
+    public static OrderItemVO orderItemToOrderItemVO(OrderItem orderItem){
+        OrderItemVO orderItemVO = new OrderItemVO();
+        orderItemVO.setOrderNo(orderItem.getOrderNo());
+        orderItemVO.setProductId(orderItem.getProductId());
+        orderItemVO.setProductName(orderItem.getProductName());
+        orderItemVO.setProductImage(orderItem.getProductImage());
+        orderItemVO.setCurrentUnitPrice(orderItem.getCurrentUnitPrice());
+        orderItemVO.setQuantity(orderItem.getQuantity());
+        orderItemVO.setTotalPrice(orderItem.getTotalPrice());
+        orderItemVO.setCreateTime(orderItem.getCreateTime());
+
+
+        return orderItemVO;
+    }
+
+    public static ShippingVO shippingToshippingVO(Shipping shipping){
+        ShippingVO shippingVO = new ShippingVO();
+        shippingVO.setReceiverName(shipping.getReceiverName());
+        shippingVO.setReceiverPhone(shipping.getReceiverPhone());
+        shippingVO.setReceiverMobile(shipping.getReceiverMobile());
+        shippingVO.setReceiverProvince(shipping.getReceiverProvince());
+        shippingVO.setReceiverCity(shipping.getReceiverCity());
+        shippingVO.setReceiverDistrict(shipping.getReceiverDistrict());
+        shippingVO.setReceiverAddress(shipping.getReceiverAddress());
+        shippingVO.setReceiverZip(shipping.getReceiverZip());
+
+        return shippingVO;
     }
 
     /*商品详情和支付宝商品类转换*/

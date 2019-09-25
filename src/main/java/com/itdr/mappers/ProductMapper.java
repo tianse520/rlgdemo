@@ -18,4 +18,10 @@ public interface ProductMapper {
                                    @Param("keyword")String keyword,
                                    @Param("col")String col,
                                    @Param("order")String order);
+
+    //根据商品ID获取商品数据
+    Product selectByProductId(Integer productId);
+
+    //根据商品ID更新商品数据
+    int updateById(Product product);
 }

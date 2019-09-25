@@ -112,7 +112,8 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.itdr.pojo.OrderItem" >
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.itdr.pojo.OrderItem" >
     update neuedu_order_item
     <set >
       <if test="userId != null" >
@@ -171,4 +172,35 @@
     where order_no = #{oid}
   </select>
 
+  <!--创建订单详情,没有问题要存到数据库中,这里要使用批量插入的方式-->
+  <insert id="insertAll" parameterType="list">
+    insert into neuedu_order_item
+    (
+    user_id,
+    order_no,
+    product_id,
+    product_name,
+    product_image,
+    current_unit_price,
+    quantity,
+    total_price,
+    create_time,
+    update_time
+    )
+    values
+    <foreach collection="orderItem" item="item" separator=",">
+      (
+      #{item.userId},
+      #{item.orderNo},
+      #{item.productId},
+      #{item.productName},
+      #{item.productImage},
+      #{item.currentUnitPrice},
+      #{item.quantity},
+      #{item.totalPrice},
+      now(),
+      now()
+      )
+    </foreach>
+  </insert>
 </mapper>
