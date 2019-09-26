@@ -203,4 +203,12 @@
       )
     </foreach>
   </insert>
+
+  <!--根据订单号和用户ID查对应商品详情-->
+  <select id="selectByOrderNoAndUid" parameterType="map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from neuedu_order_item
+    where order_no = #{orderNo} and user_id = #{uid}
+  </select>
 </mapper>

@@ -203,4 +203,20 @@
     from neuedu_order
     where order_no = #{orderNo} and user_id = #{uid}
   </select>
+
+  <!--根据用户ID获取用户所有订单-->
+    <select id="selectByUid" parameterType="integer" resultMap="BaseResultMap">
+      select
+      <include refid="Base_Column_List"/>
+      from neuedu_order
+      where user_id = #{uid}
+    </select>
+
+  <update id="updateByToStatus" parameterType="com.itdr.pojo.Order">
+    update neuedu_order
+    set status = #{status,jdbcType=INTEGER},
+      close_time = now(),
+      update_time = now()
+    where id = #{id,jdbcType=INTEGER}
+  </update>
 </mapper>

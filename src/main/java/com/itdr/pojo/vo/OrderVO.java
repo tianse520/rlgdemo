@@ -31,6 +31,8 @@ public class OrderVO {
 
     private ShippingVO shippingVO;
 
+    private String imageHost;
+
     public Long getOrderNo() {
         return orderNo;
     }
@@ -133,5 +135,13 @@ public class OrderVO {
 
     public void setShippingVO(ShippingVO shippingVO) {
         this.shippingVO = shippingVO;
+    }
+
+    public String getImageHost() {
+        return imageHost;
+    }
+
+    public void setImageHost(String imageHost) {
+        this.imageHost = imageHost;
     }
 }

@@ -24,4 +24,7 @@ public interface OrderItemMapper {
 
     //创建订单详情,没有问题要存到数据库中,这里要使用批量插入的方式
     int insertAll(@Param("orderItem") List<OrderItem> orderItem);
+
+    //根据订单号和用户ID查对应商品详情
+    List<OrderItem> selectByOrderNoAndUid(@Param("orderNo") Long orderNo, @Param("uid") Integer uid);
 }

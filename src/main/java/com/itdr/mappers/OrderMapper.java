@@ -3,6 +3,8 @@ package com.itdr.mappers;
 import com.itdr.pojo.Order;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 public interface OrderMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -21,4 +23,9 @@ public interface OrderMapper {
 
     /*判断订单编号和用户ID数据*/
     int selectByOrderNoAndUid(@Param("orderNo") Long orderNo, @Param("uid")Integer uid);
+
+    //根据用户ID获取用户所有订单
+    List<Order> selectByUid(Integer uid);
+
+    int updateByToStatus(Order order);
 }
