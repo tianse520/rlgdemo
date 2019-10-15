@@ -34,7 +34,7 @@ public class ProductVo {
 
     private Date updateTime;
 
-    private String subImages;
+    private String[] subImages;
 
     private String detail;
 
@@ -142,12 +142,12 @@ public class ProductVo {
         this.updateTime = updateTime;
     }
 
-    public String getSubImages() {
+    public String[] getSubImages() {
         return subImages;
     }
 
-    public void setSubImages(String subImages) {
-        this.subImages = subImages == null ? null : subImages.trim();
+    public void setSubImages(String[] subImages) {
+        this.subImages = subImages;
     }
 
     public String getDetail() {

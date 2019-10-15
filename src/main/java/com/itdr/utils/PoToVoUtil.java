@@ -33,14 +33,14 @@ public class PoToVoUtil {
         pvo.setPrice(p.getPrice());
         pvo.setStatus(p.getStatus());
         pvo.setStock(p.getStock());
-        pvo.setSubImages(p.getSubImages());
+        pvo.setSubImages(p.getSubImages().split(","));
         pvo.setSubtitle(p.getSubtitle());
         pvo.setUpdateTime(p.getUpdateTime());
 
         return pvo;
     }
 
-    public static CartProductVO getOne(Cart cart,Product p){
+    public static CartProductVO getOne(Cart cart, Product p) {
         //封装cartProductVo
         CartProductVO cartProductVO = new CartProductVO();
         cartProductVO.setId(cart.getId());
@@ -50,7 +50,7 @@ public class PoToVoUtil {
         cartProductVO.setProductChecked(cart.getChecked());
 
         //查询到的商品不能为NULL
-        if (p!=null){
+        if (p != null) {
             cartProductVO.setName(p.getName());
             cartProductVO.setSubtitle(p.getSubtitle());
             cartProductVO.setMainImage(p.getMainImage());
@@ -61,10 +61,10 @@ public class PoToVoUtil {
 
         Integer count = 0;
         //处理库存问题
-        if (cart.getQuantity()<=p.getStock()){
+        if (cart.getQuantity() <= p.getStock()) {
             count = cart.getQuantity();
             cartProductVO.setLimitQuantity(Const.Cart.LIMITQUANTITYSUCCESS);
-        }else {
+        } else {
             count = p.getStock();
             cartProductVO.setLimitQuantity(Const.Cart.LIMITQUANTITYFAILED);
         }
@@ -72,13 +72,13 @@ public class PoToVoUtil {
 
         //计算本条购物信息总价
         //注意先做库存处理，再做价格计算
-        BigDecimal productTotalPrice = BigDecimalUtils.mul(p.getPrice().doubleValue(),cart.getQuantity());
+        BigDecimal productTotalPrice = BigDecimalUtils.mul(p.getPrice().doubleValue(), cart.getQuantity());
         cartProductVO.setProductTotalPrice(productTotalPrice);
 
         return cartProductVO;
     }
 
-    public static OrderItemVO orderItemToOrderItemVO(OrderItem orderItem){
+    public static OrderItemVO orderItemToOrderItemVO(OrderItem orderItem) {
         OrderItemVO orderItemVO = new OrderItemVO();
         orderItemVO.setOrderNo(orderItem.getOrderNo());
         orderItemVO.setProductId(orderItem.getProductId());
@@ -93,7 +93,7 @@ public class PoToVoUtil {
         return orderItemVO;
     }
 
-    public static ShippingVO shippingToshippingVO(Shipping shipping){
+    public static ShippingVO shippingToshippingVO(Shipping shipping) {
         ShippingVO shippingVO = new ShippingVO();
         shippingVO.setReceiverName(shipping.getReceiverName());
         shippingVO.setReceiverPhone(shipping.getReceiverPhone());
@@ -108,7 +108,7 @@ public class PoToVoUtil {
     }
 
     /*商品详情和支付宝商品类转换*/
-    public static PGoodsDetail getNewPay(OrderItem orderItem){
+    public static PGoodsDetail getNewPay(OrderItem orderItem) {
         PGoodsDetail info = new PGoodsDetail();
         info.setGoods_id(orderItem.getProductId().toString());
         info.setGoods_name(orderItem.getProductName());
@@ -118,13 +118,13 @@ public class PoToVoUtil {
     }
 
     /*获取一个BizContent对象*/
-    public static BizContent getBizContent(Order order, List<OrderItem> orderItems){
+    public static BizContent getBizContent(Order order, List<OrderItem> orderItems) {
         // (必填) 商户网站订单系统中唯一订单号，64个字符以内，只能包含字母、数字、下划线，
         // 需保证商户系统端不能重复，建议通过数据库sequence生成，
         String outTradeNo = String.valueOf(order.getOrderNo());
 
         // (必填) 订单标题，粗略描述用户的支付目的。如“xxx品牌xxx门店当面付扫码消费”
-        String subject = "睿乐GO在线平台"+order.getPayment();
+        String subject = "睿乐GO在线平台" + order.getPayment();
 
         // (必填) 订单总金额，单位为元，不能超过1亿元
         // 如果同时传入了【打折金额】,【不可打折金额】,【订单总金额】三者,则必须满足如下条件:【订单总金额】=【打折金额】+【不可打折金额】
@@ -139,7 +139,7 @@ public class PoToVoUtil {
         String sellerId = "";
 
         // 订单描述，可以对交易或商品进行一个详细地描述，比如填写"购买商品2件共15.00元"
-        String body = "购买商品"+orderItems.size()+"件共"+order.getPayment()+"元";
+        String body = "购买商品" + orderItems.size() + "件共" + order.getPayment() + "元";
 
         // 商户操作员编号，添加此参数可以为商户操作员做销售统计
         String operatorId = "001";

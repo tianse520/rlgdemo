@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 public class TokenCache {
 
     //LRU算法（超过最大值使用此算法）
-    private static LoadingCache<String,String> localCache= com.google.common.cache.CacheBuilder.newBuilder()
+    private static LoadingCache<String, String> localCache = com.google.common.cache.CacheBuilder.newBuilder()
             .initialCapacity(1000)//初始化缓存项为1000
             .maximumSize(10000)//设置缓存项最大值不超过10000
             .expireAfterAccess(12, TimeUnit.HOURS)//定时回收
@@ -21,14 +21,16 @@ public class TokenCache {
                     return "null";
                 }
             });
-    public static  void  set(String key,String value){
-        localCache.put(key,value);
+
+    public static void set(String key, String value) {
+        localCache.put(key, value);
     }
-    public static String get(String key){
-        String value=null;
+
+    public static String get(String key) {
+        String value = null;
         try {
-            value= localCache.get(key);
-            if("null".equals(value)){
+            value = localCache.get(key);
+            if ("null".equals(value)) {
                 return null;
             }
             return value;

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @ResponseBody
-@RequestMapping("/manage/category/")
+@RequestMapping("/portal/manage/category/")
 public class CategoryManageController {
 
     @Autowired
@@ -19,7 +19,7 @@ public class CategoryManageController {
 
     //根据分类ID查询所有的子类（包括本身）
     @RequestMapping("get_deep_category.do")
-    public ServerResponse getDeepCategory(Integer categoryId){
+    public ServerResponse getDeepCategory(Integer categoryId) {
         ServerResponse sr = categoryService.getDeepCategory(categoryId);
         return sr;
     }

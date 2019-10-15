@@ -162,15 +162,15 @@ public class OrderServiceImpl implements OrderService {
         BigDecimal payment = new BigDecimal("0");
 
         //根据用户ID和订单编号获取对应的订单详情
-        if (orderNo != null){
-            itemList = orderItemMapper.selectByOrderNoAndUid(orderNo,uid);
+        if (orderNo != null) {
+            itemList = orderItemMapper.selectByOrderNoAndUid(orderNo, uid);
             itemVOList = this.getOrderItemVOList(itemList);
             Order order = orderMapper.selectByOrderNo(orderNo);
-            if (order == null){
-                return ServerResponse.defeatedRS(orderNo+"订单不存在");
+            if (order == null) {
+                return ServerResponse.defeatedRS(orderNo + "订单不存在");
             }
             payment = order.getPayment();
-        }else {
+        } else {
             //没有订单ID，根据用户ID获取订单详情信息
             /*获取用户购物车中选中的商品数据*/
             List<Cart> li = cartMapper.selectByUidAll(uid);
@@ -221,19 +221,19 @@ public class OrderServiceImpl implements OrderService {
 
     //获取用户订单列表
     @Override
-    public ServerResponse getOrderList(Integer uid,Integer pageSize,Integer pageNum) {
+    public ServerResponse getOrderList(Integer uid, Integer pageSize, Integer pageNum) {
         OrderVO orderVO = new OrderVO();
         List<OrderVO> orderVOList = new ArrayList<>();
 
         //获取用户的所有订单
-        PageHelper.startPage(pageNum,pageSize);
+        PageHelper.startPage(pageNum, pageSize);
         List<Order> orderList = orderMapper.selectByUid(uid);
 
         //循环创建OrderVO对象
         for (Order order : orderList) {
-            List<OrderItem> itemList = orderItemMapper.selectByOrderNoAndUid(order.getOrderNo(),uid);
+            List<OrderItem> itemList = orderItemMapper.selectByOrderNoAndUid(order.getOrderNo(), uid);
             List<OrderItemVO> itemVOList = this.getOrderItemVOList(itemList);
-            Shipping shipping = shippingMapper.selectByIdAndUid(order.getShippingId(),uid);
+            Shipping shipping = shippingMapper.selectByIdAndUid(order.getShippingId(), uid);
 
             ShippingVO shippingVO = PoToVoUtil.shippingToshippingVO(shipping);
 
@@ -269,35 +269,35 @@ public class OrderServiceImpl implements OrderService {
     /*取消订单*/
     @Override
     public ServerResponse countermandOrder(Integer uid, Long orderNo) {
-        if(orderNo == null||orderNo<=0){
+        if (orderNo == null || orderNo <= 0) {
             return ServerResponse.defeatedRS("非法参数");
         }
 
         //判断订单是否存在
         Order order = orderMapper.selectByOrderNo(orderNo);
-        if (order == null){
-            return ServerResponse.defeatedRS(orderNo+"订单不存在");
+        if (order == null) {
+            return ServerResponse.defeatedRS(orderNo + "订单不存在");
         }
 
         //判断订单是不是未付款的状态
-        if (order.getStatus() !=10){
-            return ServerResponse.defeatedRS(orderNo+"不是未付款状态");
+        if (order.getStatus() != 10) {
+            return ServerResponse.defeatedRS(orderNo + "不是未付款状态");
         }
 
         //取消订单，改变订单状态
         order.setStatus(0);
         int i = orderMapper.updateByToStatus(order);
-        if (i<=0){
-            return ServerResponse.defeatedRS(orderNo+"订单取消失败");
+        if (i <= 0) {
+            return ServerResponse.defeatedRS(orderNo + "订单取消失败");
         }
 
         //取消库存锁定
         List<OrderItem> itemList = orderItemMapper.selectByOrderNo(orderNo);
         for (OrderItem orderItem : itemList) {
             Product product = productMapper.selectByProductId(orderItem.getProductId());
-            product.setStock(product.getStock()+orderItem.getQuantity());
+            product.setStock(product.getStock() + orderItem.getQuantity());
             int iProduct = productMapper.updateById(product);
-            if (iProduct<=0){
+            if (iProduct <= 0) {
                 return ServerResponse.defeatedRS("商品更新失败");
             }
         }
@@ -317,7 +317,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     /*根据订单详情集合获取OrderItemVO集合*/
-    private List<OrderItemVO> getOrderItemVOList(List<OrderItem> orderItemList){
+    private List<OrderItemVO> getOrderItemVOList(List<OrderItem> orderItemList) {
         /*拼接VO类,返回数据*/
         List<OrderItemVO> itemVOList = new ArrayList<>();
         for (OrderItem orderItem : orderItemList) {

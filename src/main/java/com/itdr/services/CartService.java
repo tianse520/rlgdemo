@@ -23,5 +23,5 @@ public interface CartService {
     ServerResponse<Integer> getCartProductCount(Integer id);
 
     //改变购物车种商品选中状态
-    ServerResponse<CartVO> selectOrUnSelect(Integer id,Integer check,Integer productId);
+    ServerResponse<CartVO> selectOrUnSelect(Integer id, Integer check, Integer productId);
 }

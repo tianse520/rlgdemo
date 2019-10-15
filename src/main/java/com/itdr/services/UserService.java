@@ -29,5 +29,5 @@ public interface UserService {
     ServerResponse<Users> forgetResetPassword(String username, String passwordNew, String forgetToken);
 
     //登录状态中重置密码
-    ServerResponse<Users> resetPassword(Users users,String passwordOld, String passwordNew);
+    ServerResponse<Users> resetPassword(Users users, String passwordOld, String passwordNew);
 }

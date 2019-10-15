@@ -11,7 +11,7 @@ public interface OrderService {
     ServerResponse getOrderItems(Integer id, Long orderNo);
 
     //获取用户订单列表
-    ServerResponse getOrderList(Integer uid,Integer pageSize,Integer pageNum);
+    ServerResponse getOrderList(Integer uid, Integer pageSize, Integer pageNum);
 
     /*用户取消订单*/
     ServerResponse countermandOrder(Integer uid, Long orderNo);

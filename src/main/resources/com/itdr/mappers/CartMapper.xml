@@ -103,11 +103,11 @@
   </update>
     <!--根据用户ID和商品ID判断数据是否存在-->
     <select id="selectByUidAndProductID" parameterType="map" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List"/>
-    from neuedu_cart
-    where user_id=#{uid} and product_id=#{productId}
-  </select>
+        select
+        <include refid="Base_Column_List"/>
+        from neuedu_cart
+        where user_id=#{uid} and product_id=#{productId}
+    </select>
     <!--根据用户ID查询所有购物数据-->
     <select id="selectByUid" parameterType="integer" resultMap="BaseResultMap">
         select
@@ -131,12 +131,12 @@
     </select>
     <!--改变购物车种商品选中状态-->
     <update id="selectOrUnSelect" parameterType="map">
-      update neuedu_cart
-      set checked = #{check}
-    where user_id = #{id}
-    <if test="productId != null">
-        and product_id = #{productId}
-    </if>
+        update neuedu_cart
+        set checked = #{check}
+        where user_id = #{id}
+        <if test="productId != null">
+            and product_id = #{productId}
+        </if>
     </update>
     <!--购物车删除商品-->
     <delete id="deleteByProduct" parameterType="map">

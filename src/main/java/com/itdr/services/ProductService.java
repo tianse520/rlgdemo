@@ -12,4 +12,7 @@ public interface ProductService {
 
     //商品搜索+动态排序
     ServerResponse<Product> listProduct(Integer productId, String keyword, Integer pageNum, Integer pageSize, String orderBy);
+
+    //获取最新、最热、banner商品详情
+    ServerResponse<Product> detailNewOrHotOrBanner(Integer is_new, Integer is_hot, Integer is_banner);
 }

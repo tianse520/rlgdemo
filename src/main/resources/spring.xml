@@ -9,36 +9,36 @@
 	http://www.springframework.org/schema/context/spring-context-4.2.xsd">
 
 
-  <context:component-scan base-package="com.itdr">
-    <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
-  </context:component-scan>
+    <context:component-scan base-package="com.itdr">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
 
-  <!--引入外部配置文件-->
-  <context:property-placeholder location="classpath:db.properties"/>
-  <!--创建连接池-->
-  <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-    <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-    <property name="url" value="jdbc:mysql://localhost/shopping"/>
-    <property name="username" value="root"/>
-    <property name="password" value="1234"/>
-  </bean>
+    <!--引入外部配置文件-->
+    <context:property-placeholder location="classpath:db.properties"/>
+    <!--创建连接池-->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost/shopping"/>
+        <property name="username" value="root"/>
+        <property name="password" value="1234"/>
+    </bean>
 
-  <!--创建sqlSessionFactory的bean-->
-  <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-    <property name="configLocation" value="classpath:sqlMapConfig.xml"/>
-    <property name="dataSource" ref="dataSource"/>
-    <!--分页插件-->
-    <property name="plugins">
-      <array>
-        <bean class="com.github.pagehelper.PageInterceptor">
-          <property name="properties" value="mysql"/>
-        </bean>
-      </array>
-    </property>
-  </bean>
+    <!--创建sqlSessionFactory的bean-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="configLocation" value="classpath:sqlMapConfig.xml"/>
+        <property name="dataSource" ref="dataSource"/>
+        <!--分页插件-->
+        <property name="plugins">
+            <array>
+                <bean class="com.github.pagehelper.PageInterceptor">
+                    <property name="properties" value="mysql"/>
+                </bean>
+            </array>
+        </property>
+    </bean>
 
-  <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-    <property name="basePackage" value="com.itdr.mappers"/>
-  </bean>
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.itdr.mappers"/>
+    </bean>
 
 </beans>

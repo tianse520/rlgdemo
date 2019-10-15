@@ -6,7 +6,7 @@ import java.util.Properties;
 
 public class PropertiesUtil {
 
-    public  static String getValue(String key) throws IOException {
+    public static String getValue(String key) throws IOException {
         Properties p = new Properties();
         InputStream in = PropertiesUtil.class.getClassLoader().getResourceAsStream("sets.properties");
         p.load(in);

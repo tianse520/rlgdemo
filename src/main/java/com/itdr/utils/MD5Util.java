@@ -1,7 +1,9 @@
 package com.itdr.utils;
 
 import org.springframework.util.StringUtils;
+
 import java.security.MessageDigest;
+
 /**
  * ClassName: MD5Util
  * 日期: 2019/9/10 12:28

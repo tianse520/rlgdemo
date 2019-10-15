@@ -23,7 +23,7 @@ import java.util.Set;
 
 @Controller
 @ResponseBody
-@RequestMapping("/order/")
+@RequestMapping("/portal/order/")
 public class AlipayController {
 
     //注入支付业务层
@@ -35,8 +35,8 @@ public class AlipayController {
     private ServerResponse alipay(Long orderNo, HttpSession session) {
         //用户是否登录
         Users users = (Users) session.getAttribute(Const.LOGINUSER);
-        if (users == null){
-            return ServerResponse.defeatedRS(Const.UsersEnum.NO_LOGIN.getCode(),Const.UsersEnum.NO_LOGIN.getDesc());
+        if (users == null) {
+            return ServerResponse.defeatedRS(Const.UsersEnum.NO_LOGIN.getCode(), Const.UsersEnum.NO_LOGIN.getDesc());
         }
         return aliPayService.alipay(orderNo, users.getId());
     }
@@ -46,8 +46,8 @@ public class AlipayController {
     private ServerResponse queryOrderPayStatus(Long orderNo, HttpSession session) {
         //用户是否登录
         Users users = (Users) session.getAttribute(Const.LOGINUSER);
-        if (users == null){
-            return ServerResponse.defeatedRS(Const.UsersEnum.NO_LOGIN.getCode(),Const.UsersEnum.NO_LOGIN.getDesc());
+        if (users == null) {
+            return ServerResponse.defeatedRS(Const.UsersEnum.NO_LOGIN.getCode(), Const.UsersEnum.NO_LOGIN.getDesc());
         }
         return aliPayService.queryOrderPayStatus(orderNo, users.getId());
     }
@@ -64,9 +64,9 @@ public class AlipayController {
         /*使用迭代器遍历键集合获得值*/
         Iterator<String> iterator = strings.iterator();
         /*创建一个接受参数的集合*/
-        Map<String,String> newMap = new HashMap<>();
+        Map<String, String> newMap = new HashMap<>();
         /*便利迭代器，重新组装参数*/
-        while (iterator.hasNext()){
+        while (iterator.hasNext()) {
             /*根据键获取parameterMap中的值*/
             String key = iterator.next();
             String[] strings1 = parameterMap.get(key);
@@ -76,7 +76,7 @@ public class AlipayController {
                 ss = (i == strings1.length - 1) ? ss.append(strings1[i]) : ss.append(strings1[i] + ",");
             }
             /*把新的数据以键值对的方式放入一个新的集合中*/
-            newMap.put(key,ss.toString());
+            newMap.put(key, ss.toString());
         }
         /*取出不必要参数*/
         newMap.remove("sign_type");
@@ -86,7 +86,7 @@ public class AlipayController {
             System.out.println(b);
 
             /*验签通过执行下一步*/
-            if (!b){
+            if (!b) {
                 return "{'msg':'验签失败'}";
             }
 
@@ -99,9 +99,9 @@ public class AlipayController {
         ServerResponse sr = aliPayService.alipayCallback(newMap);
 
         /*业务层处理完之后，返回对应的状态信息，这个信息是直接返回给支付宝服务器的，所以必须严格要求准确*/
-        if (sr.isSuccess()){
+        if (sr.isSuccess()) {
             return "SUCCESS";
-        }else {
+        } else {
             return "FAILED";
         }
 

@@ -1,81 +1,90 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.itdr.mappers.ProductMapper" >
-  <resultMap id="BaseResultMap" type="com.itdr.pojo.Product" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="category_id" property="categoryId" jdbcType="INTEGER" />
-    <result column="pname" property="name" jdbcType="VARCHAR" />
-    <result column="subtitle" property="subtitle" jdbcType="VARCHAR" />
-    <result column="main_image" property="mainImage" jdbcType="VARCHAR" />
-    <result column="sub_images" property="subImages" jdbcType="LONGVARCHAR" />
-    <result column="detail" property="detail" jdbcType="LONGVARCHAR" />
-    <result column="price" property="price" jdbcType="DECIMAL" />
-    <result column="stock" property="stock" jdbcType="INTEGER" />
-    <result column="status" property="status" jdbcType="INTEGER" />
-    <result column="is_new" property="isNew" jdbcType="BIT" />
-    <result column="is_hot" property="isHot" jdbcType="BIT" />
-    <result column="is_banner" property="isBanner" jdbcType="BIT" />
-    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
-  </resultMap>
-  <sql id="Base_Column_List" >
-    id, category_id, pname, subtitle, main_image,sub_images,detail, price, stock, status, is_new, is_hot,
+<mapper namespace="com.itdr.mappers.ProductMapper">
+    <resultMap id="BaseResultMap" type="com.itdr.pojo.Product">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="category_id" property="categoryId" jdbcType="INTEGER"/>
+        <result column="pname" property="name" jdbcType="VARCHAR"/>
+        <result column="subtitle" property="subtitle" jdbcType="VARCHAR"/>
+        <result column="main_image" property="mainImage" jdbcType="VARCHAR"/>
+        <result column="sub_images" property="subImages" jdbcType="LONGVARCHAR"/>
+        <result column="detail" property="detail" jdbcType="LONGVARCHAR"/>
+        <result column="price" property="price" jdbcType="DECIMAL"/>
+        <result column="stock" property="stock" jdbcType="INTEGER"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="is_new" property="isNew" jdbcType="BIT"/>
+        <result column="is_hot" property="isHot" jdbcType="BIT"/>
+        <result column="is_banner" property="isBanner" jdbcType="BIT"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, category_id, name, subtitle, main_image,sub_images,detail, price, stock, status, is_new, is_hot,
     is_banner, create_time, update_time
   </sql>
 
-  <!--根据圣品ID获取商品详情-->
+    <!--根据圣品ID获取商品详情-->
     <select id="selectByID" parameterType="map" resultMap="BaseResultMap">
-      select
-      <include refid="Base_Column_List"/>
-      from neuedu_product
-      <where>
-        id = #{productId}
-        <if test="is_new != 0">
-          and is_new=1
-        </if>
-        <if test="is_hot != 0">
-          and is_hot=1
-        </if>
-        <if test="is_banner != 0">
-          and is_banner=1
-        </if>
-        and status = 1
-      </where>
+        select
+        <include refid="Base_Column_List"/>
+        from neuedu_product
+        <where>
+            id = #{productId}
+            <if test="is_new != 0">
+                and is_new=1
+            </if>
+            <if test="is_hot != 0">
+                and is_hot=1
+            </if>
+            <if test="is_banner != 0">
+                and is_banner=1
+            </if>
+            and status = 1
+        </where>
     </select>
-  <!--根据商品ID或者商品名称关键字查询数据-->
-  <!--双引号执行后为"%#{}%"，单引号在mybatis内冲突，在业务层先在keyword上加上%就可以不用在这加-->
-  <select id="selectByIdOrName" parameterType="map" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List"/>
-    from neuedu_product
-    <where>
-      <if test="productId >0" >
-        id = #{productId}
-      </if>
-      <if test="keyword != '%%'">
-        or name like #{keyword}
-      </if>
-      and status = 1
-      <!--<if test="col != null">-->
-        <!--order by #{col}-->
-      <!--</if>-->
-      <!--<if test="order != null">-->
-        <!--#{order}-->
-      <!--</if>-->
-    </where>
-  </select>
-  <!--根据商品ID获取商品数据-->
+    <!--根据商品ID或者商品名称关键字查询数据-->
+    <!--双引号执行后为"%#{}%"，单引号在mybatis内冲突，在业务层先在keyword上加上%就可以不用在这加-->
+    <select id="selectByIdOrName" parameterType="map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from neuedu_product
+        <where>
+            <if test="productId >0">
+                id = #{productId}
+            </if>
+            <if test="keyword != '%%'">
+                or name like #{keyword}
+            </if>
+            and status = 1
+            <!--<if test="col != null">-->
+            <!--order by #{col}-->
+            <!--</if>-->
+            <!--<if test="order != null">-->
+            <!--#{order}-->
+            <!--</if>-->
+        </where>
+    </select>
+    <!--根据商品ID获取商品数据-->
     <select id="selectByProductId" parameterType="integer" resultMap="BaseResultMap">
-      select
-      <include refid="Base_Column_List"/>
-      from neuedu_product
-      where id=#{productId}
+        select
+        <include refid="Base_Column_List"/>
+        from neuedu_product
+        where id=#{productId}
     </select>
 
-  <!--根据商品ID更新商品数据-->
-  <update id="updateById" parameterType="com.itdr.pojo.Product">
+
+    <!--根据商品ID更新商品数据-->
+    <update id="updateById" parameterType="com.itdr.pojo.Product">
     update neuedu_product
     set stock = #{stock,jdbcType=INTEGER},update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+    <!--查询最新、最热、banner商品详情-->
+    <select id="selectByNewOrHotOrBanner" parameterType="map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from neuedu_product
+        where is_new = #{new} and is_hot = #{hot} and is_banner = #{banner} and status = 1
+    </select>
 </mapper>

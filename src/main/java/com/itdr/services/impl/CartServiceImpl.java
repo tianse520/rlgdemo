@@ -37,16 +37,16 @@ public class CartServiceImpl implements CartService {
     public ServerResponse<CartVO> addOne(Integer productId, Integer count, Integer uid) {
         //参数非空判断
         if (productId == null || productId <= 0 || count == null || count <= 0) {
-            return ServerResponse.defeatedRS(Const.CartEnum.EMPTY_NUM.getCode(),Const.CartEnum.EMPTY_NUM.getDesc());
+            return ServerResponse.defeatedRS(Const.CartEnum.EMPTY_NUM.getCode(), Const.CartEnum.EMPTY_NUM.getDesc());
         }
 
         //向购物车表中存储数据
 
         //如果有这条购物信息，就是更新购物数量，如果没有才是插入新数据
         Cart c2 = cartMapper.selectByUidAndProductID(uid, productId);
-        if (c2 !=null) {
+        if (c2 != null) {
             //更新数据
-            c2.setQuantity(c2.getQuantity()+count);
+            c2.setQuantity(c2.getQuantity() + count);
             int i = cartMapper.updateByPrimaryKeySelective(c2);
         } else {
             //插入新数据
@@ -65,7 +65,7 @@ public class CartServiceImpl implements CartService {
     }
 
     //购物车高可复用方法
-    private CartVO getCartVo(Integer uid){
+    private CartVO getCartVo(Integer uid) {
         //创建CartVO对象
         CartVO cartVO = new CartVO();
 
@@ -79,10 +79,10 @@ public class CartServiceImpl implements CartService {
         List<Cart> liCart = cartMapper.selectByUid(uid);
 
         //从购物信息集合中拿出每一条数据，根据其中的商品ID查询需要的商品信息
-        if(liCart.size()!=0){
+        if (liCart.size() != 0) {
             for (Cart cart : liCart) {
                 //根据购物信息中的商品ID查询商品数据
-                Product p = productMapper.selectByID(cart.getProductId(),0,0,0);
+                Product p = productMapper.selectByID(cart.getProductId(), 0, 0, 0);
                 //使用工具类进行数据封装
                 CartProductVO cartProductVO = PoToVoUtil.getOne(cart, p);
 
@@ -112,12 +112,13 @@ public class CartServiceImpl implements CartService {
         }
         return cartVO;
     }
+
     //判断用户购物车是否全选
-    private boolean checkALL(Integer uid){
-        int i = cartMapper.selectByUidCheck(uid,Const.Cart.UNCHECK);
-        if(i == 0){
+    private boolean checkALL(Integer uid) {
+        int i = cartMapper.selectByUidCheck(uid, Const.Cart.UNCHECK);
+        if (i == 0) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
@@ -134,7 +135,7 @@ public class CartServiceImpl implements CartService {
     public ServerResponse<CartVO> updateCart(Integer productId, Integer count, Integer id) {
         //参数非空判断
         if (productId == null || productId <= 0 || count == null || count <= 0) {
-            return ServerResponse.defeatedRS(Const.CartEnum.EMPTY_NUM.getCode(),Const.CartEnum.EMPTY_NUM.getDesc());
+            return ServerResponse.defeatedRS(Const.CartEnum.EMPTY_NUM.getCode(), Const.CartEnum.EMPTY_NUM.getDesc());
         }
 
         //如果有这条购物信息，就是更新购物数量，如果没有才是插入新数据
@@ -150,15 +151,15 @@ public class CartServiceImpl implements CartService {
     //购物车删除商品
     @Override
     public ServerResponse<CartVO> deleteCart(String productIds, Integer id) {
-        if (productIds == null||productIds.equals("")){
-            return ServerResponse.defeatedRS(Const.CartEnum.EMPTY_NUM.getCode(),Const.CartEnum.EMPTY_NUM.getDesc());
+        if (productIds == null || productIds.equals("")) {
+            return ServerResponse.defeatedRS(Const.CartEnum.EMPTY_NUM.getCode(), Const.CartEnum.EMPTY_NUM.getDesc());
         }
 
         //把字符串中的数据放到集合中
         String[] split = productIds.split(",");
         List<String> strings = Arrays.asList(split);
 
-        int i = cartMapper.deleteByProduct(strings,id);
+        int i = cartMapper.deleteByProduct(strings, id);
         return listCart(id);
     }
 
@@ -171,8 +172,8 @@ public class CartServiceImpl implements CartService {
 
     //改变购物车种商品选中状态
     @Override
-    public ServerResponse<CartVO> selectOrUnSelect(Integer id,Integer check,Integer productId) {
-        int i = cartMapper.selectOrUnSelect(id,check,productId);
+    public ServerResponse<CartVO> selectOrUnSelect(Integer id, Integer check, Integer productId) {
+        int i = cartMapper.selectOrUnSelect(id, check, productId);
         return listCart(id);
     }
 }

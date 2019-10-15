@@ -28,8 +28,8 @@ public class ZxingUtils {
         int height = matrix.getHeight();
         BufferedImage image = new BufferedImage(width, height, 1);
 
-        for(int x = 0; x < width; ++x) {
-            for(int y = 0; y < height; ++y) {
+        for (int x = 0; x < width; ++x) {
+            for (int y = 0; y < height; ++y) {
                 image.setRGB(x, y, matrix.get(x, y) ? -16777216 : -1);
             }
         }

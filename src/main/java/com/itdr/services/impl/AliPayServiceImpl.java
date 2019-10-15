@@ -41,21 +41,21 @@ public class AliPayServiceImpl implements AliPayService {
     public ServerResponse alipay(Long orderNo, Integer uid) {
         //参数非空判断
         if (orderNo == null || orderNo <= 0) {
-            return ServerResponse.defeatedRS(Const.CartEnum.EMPTY_NUM.getCode(),Const.CartEnum.EMPTY_NUM.getDesc());
+            return ServerResponse.defeatedRS(Const.CartEnum.EMPTY_NUM.getCode(), Const.CartEnum.EMPTY_NUM.getDesc());
         }
         //判断订单是否存在
         Order order = orderMapper.selectByOrderNo(orderNo);
         if (order == null) {
-            return ServerResponse.defeatedRS(Const.PaymentPlatformEnum.EMPTY_ALIPAY.getCode(),Const.PaymentPlatformEnum.EMPTY_ALIPAY.getDesc());
+            return ServerResponse.defeatedRS(Const.PaymentPlatformEnum.EMPTY_ALIPAY.getCode(), Const.PaymentPlatformEnum.EMPTY_ALIPAY.getDesc());
         }
         //判断订单状态是否是未付款
-        if (order.getStatus() !=10) {
-            return ServerResponse.defeatedRS(Const.PaymentPlatformEnum.ERROR_CART.getCode(),Const.PaymentPlatformEnum.ERROR_CART.getDesc());
+        if (order.getStatus() != 10) {
+            return ServerResponse.defeatedRS(Const.PaymentPlatformEnum.ERROR_CART.getCode(), Const.PaymentPlatformEnum.ERROR_CART.getDesc());
         }
         //判断订单和用户是否匹配
         int i = orderMapper.selectByOrderNoAndUid(orderNo, uid);
         if (i <= 0) {
-            return ServerResponse.defeatedRS(Const.PaymentPlatformEnum.ERROR_USER_CART.getCode(),Const.PaymentPlatformEnum.ERROR_USER_CART.getDesc());
+            return ServerResponse.defeatedRS(Const.PaymentPlatformEnum.ERROR_USER_CART.getCode(), Const.PaymentPlatformEnum.ERROR_USER_CART.getDesc());
         }
 
         //根据订单号查询对应商品详情
@@ -66,9 +66,9 @@ public class AliPayServiceImpl implements AliPayService {
             AlipayTradePrecreateResponse response = test_trade_precreate(order, orderItems);
 
             //响应成功才执行下一步
-            if (response.isSuccess()){
+            if (response.isSuccess()) {
                 //将二维码信息串生成图片，并保存，（需要修改为运行机器上的路径）
-                String filePath = String.format(Configs.getSavecode_test()+"qr-%s.png",
+                String filePath = String.format(Configs.getSavecode_test() + "qr-%s.png",
                         response.getOutTradeNo());
                 ZxingUtils.getQRCodeImge(response.getQrCode(), 256, filePath);
 
@@ -78,7 +78,7 @@ public class AliPayServiceImpl implements AliPayService {
 
                 map.put("qrCode", filePath);
                 return ServerResponse.successRS(map);
-            }else {
+            } else {
                 return ServerResponse.defeatedRS("下单失败");
             }
         } catch (AlipayApiException e) {
@@ -97,20 +97,20 @@ public class AliPayServiceImpl implements AliPayService {
         if (order == null) {
             return ServerResponse.defeatedRS("该订单不存在");
         }
-        if (order.getStatus() ==10) {
+        if (order.getStatus() == 10) {
             return ServerResponse.defeatedRS("该订单未付款");
         }
-        if (order.getStatus() ==20) {
+        if (order.getStatus() == 20) {
             return ServerResponse.defeatedRS("该订单已付款");
         }
-        if (order.getStatus() ==40) {
+        if (order.getStatus() == 40) {
             return ServerResponse.defeatedRS("该订单已发货");
         }
-        if (order.getStatus() ==50) {
+        if (order.getStatus() == 50) {
             return ServerResponse.defeatedRS("该订单已交易成功");
         }
         //判断订单状态是否是未付款
-        if (order.getStatus() ==60) {
+        if (order.getStatus() == 60) {
             return ServerResponse.defeatedRS("该订单交易已关闭");
         }
         return ServerResponse.defeatedRS("订单状态错误");
@@ -155,7 +155,7 @@ public class AliPayServiceImpl implements AliPayService {
         //获取支付时间
         String payment_time = newMap.get("gmt_payment");
         //获取订单金额
-        BigDecimal totalAmount =new BigDecimal(newMap.get("total_amount"));
+        BigDecimal totalAmount = new BigDecimal(newMap.get("total_amount"));
         //获取订单中的用户ID
 //        Integer uid =Integer.parseInt(newMap.get("uid"));
 
@@ -167,7 +167,7 @@ public class AliPayServiceImpl implements AliPayService {
         }
 
         //验证订单金额和数据库中订单金额是否相同
-        if (!totalAmount.equals(order.getPayment())){
+        if (!totalAmount.equals(order.getPayment())) {
             return ServerResponse.defeatedRS("订单金额不匹配");
         }
 
@@ -177,7 +177,7 @@ public class AliPayServiceImpl implements AliPayService {
 //            return ServerResponse.defeatedRS("订单和用户不匹配");
 //        }
         //防止支付宝重复回调
-        if (order.getStatus()!=10) {
+        if (order.getStatus() != 10) {
             return ServerResponse.defeatedRS("订单不是未付款状态");
         }
 
@@ -190,7 +190,7 @@ public class AliPayServiceImpl implements AliPayService {
             orderMapper.updateByPrimaryKey(order);
 
             //支付成功，删除本地存在的二维码图片
-            String str = String.format(Configs.getSavecode_test()+"qr-%s.png",
+            String str = String.format(Configs.getSavecode_test() + "qr-%s.png",
                     order.getOrderNo());
             File file = new File(str);
             boolean b = file.delete();
